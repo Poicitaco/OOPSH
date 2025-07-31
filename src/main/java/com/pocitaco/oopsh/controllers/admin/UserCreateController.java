@@ -10,6 +10,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
+import com.pocitaco.oopsh.utils.PasswordUtils;
 import javafx.fxml.FXML;
 
 public class UserCreateController extends BaseController {
@@ -62,11 +63,11 @@ public class UserCreateController extends BaseController {
             User newUser = new User();
             newUser.setFullName(txtFullName.getText());
             newUser.setEmail(txtEmail.getText());
-            newUser.setPassword(txtPassword.getText()); // In a real app, hash the password
+            newUser.setPassword(PasswordUtils.hashPassword(txtPassword.getText()));
             newUser.setRole(cmbRole.getValue());
             newUser.setStatus(cmbStatus.getValue());
 
-            userDAO.create(newUser);
+            userDAO.addUser(newUser);
 
             showInfo("User Created", "User " + newUser.getFullName() + " has been created successfully.");
             clearForm();
@@ -108,3 +109,4 @@ public class UserCreateController extends BaseController {
         btnCancel.setDisable(!enabled);
     }
 }
+

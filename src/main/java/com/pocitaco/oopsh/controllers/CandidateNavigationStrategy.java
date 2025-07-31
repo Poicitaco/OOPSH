@@ -66,3 +66,4 @@ public class CandidateNavigationStrategy implements NavigationStrategy {
         return allowedFunctions.contains(functionality);
     }
 }
+

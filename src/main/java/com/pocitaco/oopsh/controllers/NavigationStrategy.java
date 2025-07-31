@@ -23,3 +23,4 @@ public interface NavigationStrategy {
      */
     boolean hasAccess(String functionality);
 }
+

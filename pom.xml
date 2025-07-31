@@ -6,10 +6,10 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
-        <javafx.version>21.0.2</javafx.version>
-        <materialfx.version>11.16.1</materialfx.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <javafx.version>17.0.8</javafx.version>
+        <materialfx.version>11.13.5</materialfx.version>
     </properties>
     <dependencies>
         <!-- JavaFX Dependencies -->
@@ -60,14 +60,71 @@
     </dependencies>
     <build>
         <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-materialfx</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>io.github.palexdev</groupId>
+                                    <artifactId>materialfx</artifactId>
+                                    <version>${materialfx.version}</version>
+                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                    <destFileName>materialfx-${materialfx.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-materialfx</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>io.github.palexdev</groupId>
+                                    <artifactId>materialfx</artifactId>
+                                    <version>${materialfx.version}</version>
+                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                    <destFileName>materialfx-${materialfx.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>23</release>
+                    <release>17</release>
+                    <compilerArgs>
+                        <arg>--patch-module</arg>
+                        <arg>com.pocitaco.oopsh=${project.build.directory}/lib/materialfx-${materialfx.version}.jar</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
+            
+            
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -93,6 +150,7 @@
                     </execution>
                     <execution>
                         <!-- Configuration for automatic IDE debugging -->
+                        <!-- Usage: mvn clean javafx:run@debug -->
                         <id>ide-debug</id>
                         <configuration>
                             <options>

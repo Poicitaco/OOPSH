@@ -48,3 +48,4 @@ public class ActionButtonConfig {
         this.styleClass = styleClass;
     }
 }
+

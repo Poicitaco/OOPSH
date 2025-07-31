@@ -64,3 +64,4 @@ public class AdminNavigationStrategy implements NavigationStrategy {
         return true;
     }
 }
+

@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 /**
  * Represents a menu item in the navigation
  */
+@SuppressWarnings("unused")
 public class MenuItem {
     private String title;
     private String category;
@@ -91,3 +92,4 @@ public class MenuItem {
         this.iconLiteral = iconLiteral;
     }
 }
+

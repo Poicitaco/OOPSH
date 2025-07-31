@@ -10,6 +10,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.FXCollections;
+import com.pocitaco.oopsh.utils.PasswordUtils;
 import javafx.fxml.FXML;
 
 public class UserEditController extends BaseController {
@@ -72,13 +73,13 @@ public class UserEditController extends BaseController {
             
             // Only update password if a new one is entered
             if (!txtPassword.getText().isEmpty()) {
-                userToEdit.setPassword(txtPassword.getText()); // In a real app, hash the password
+                userToEdit.setPassword(PasswordUtils.hashPassword(txtPassword.getText()));
             }
             
             userToEdit.setRole(cmbRole.getValue());
             userToEdit.setStatus(cmbStatus.getValue());
 
-            userDAO.update(userToEdit);
+            userDAO.updateUser(userToEdit);
 
             showInfo("User Updated", "User " + userToEdit.getFullName() + " has been updated successfully.");
             // Optionally, navigate back to the user management screen
@@ -119,3 +120,4 @@ public class UserEditController extends BaseController {
         btnCancel.setDisable(!enabled);
     }
 }
+

@@ -101,3 +101,4 @@ public abstract class BaseController implements Initializable {
      */
     protected abstract void setFormEnabled(boolean enabled);
 }
+

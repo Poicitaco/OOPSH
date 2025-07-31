@@ -64,3 +64,4 @@ public class ExaminerNavigationStrategy implements NavigationStrategy {
         return allowedFunctions.contains(functionality);
     }
 }
+

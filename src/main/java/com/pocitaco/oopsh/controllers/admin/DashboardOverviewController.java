@@ -57,3 +57,4 @@ public class DashboardOverviewController extends BaseDashboardController {
         // Navigation is handled by the MainLayoutController
     }
 }
+

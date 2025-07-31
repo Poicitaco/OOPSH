@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data Access Object for User management
@@ -154,7 +155,79 @@ public class UserDAO {
         return null;
     }
 
+    public Optional<User> findByUsername(String username) {
+        return getAllUsers().stream().filter(user -> user.getUsername().equals(username)).findFirst();
+    }
+
+    public Optional<User> findById(int id) {
+        return getAllUsers().stream().filter(user -> user.getId() == id).findFirst();
+    }
+
+    public Optional<User> get(int id) {
+        return findById(id);
+    }
+
+    public User update(User user) {
+        try {
+            File xmlFile = new File(XML_FILE);
+            if (!xmlFile.exists()) {
+                return user; // Return as-is if file doesn't exist
+            }
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(xmlFile);
+
+            NodeList userNodes = doc.getElementsByTagName("user");
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Element userElement = (Element) userNodes.item(i);
+                if (Integer.parseInt(getElementText(userElement, "id")) == user.getId()) {
+                    // Update the existing user element with new data
+                    updateUserElement(doc, userElement, user);
+                    
+                    // Save the document
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    Transformer transformer = transformerFactory.newTransformer();
+                    DOMSource source = new DOMSource(doc);
+                    StreamResult result = new StreamResult(xmlFile);
+                    transformer.transform(source, result);
+                    
+                    return user;
+                }
+            }
+            throw new RuntimeException("User with id " + user.getId() + " not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error updating user", e);
+        }
+    }
+
+    private void updateUserElement(Document doc, Element userElement, User user) {
+        // Clear existing content and rebuild
+        while (userElement.hasChildNodes()) {
+            userElement.removeChild(userElement.getFirstChild());
+        }
+        
+        userElement.appendChild(createElement(doc, "id", String.valueOf(user.getId())));
+        userElement.appendChild(createElement(doc, "username", user.getUsername()));
+        userElement.appendChild(createElement(doc, "password", user.getPassword()));
+        userElement.appendChild(createElement(doc, "fullName", user.getFullName()));
+        userElement.appendChild(createElement(doc, "email", user.getEmail()));
+        userElement.appendChild(createElement(doc, "phone", user.getPhone()));
+        userElement.appendChild(createElement(doc, "birthday", user.getBirthday() != null ? user.getBirthday().format(DATE_FORMATTER) : ""));
+        userElement.appendChild(createElement(doc, "address", user.getAddress()));
+        if (user.getEmployeeId() != null) {
+            userElement.appendChild(createElement(doc, "employeeId", user.getEmployeeId()));
+        }
+        userElement.appendChild(createElement(doc, "role", user.getRole().name()));
+        userElement.appendChild(createElement(doc, "status", user.getStatus().name()));
+    }
+
     public List<User> getAllUsers() {
+        return getAll();
+    }
+
+    public List<User> getAll() {
         List<User> users = new ArrayList<>();
 
         try {
@@ -225,13 +298,73 @@ public class UserDAO {
     }
 
     public void addUser(User user) {
-        // Implementation for adding new user
-        // This will be implemented when needed
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(XML_FILE));
+            Element root = doc.getDocumentElement();
+
+            int newId = getAllUsers().stream().mapToInt(User::getId).max().orElse(0) + 1;
+            user.setId(newId);
+
+            addUserToDocument(doc, root, user);
+            saveDocument(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateUser(User user) {
-        // Implementation for updating user
-        // This will be implemented when needed
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(XML_FILE));
+            Element root = doc.getDocumentElement();
+
+            NodeList userNodes = root.getElementsByTagName("user");
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Node userNode = userNodes.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+                    if (Integer.parseInt(getElementText(userElement, "id")) == user.getId()) {
+                        // Remove the old user element
+                        root.removeChild(userElement);
+                        // Add the updated user element
+                        addUserToDocument(doc, root, user);
+                        break;
+                    }
+                }
+            }
+
+            saveDocument(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(int userId) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(XML_FILE));
+            Element root = doc.getDocumentElement();
+
+            NodeList userNodes = root.getElementsByTagName("user");
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Node userNode = userNodes.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+                    if (Integer.parseInt(getElementText(userElement, "id")) == userId) {
+                        root.removeChild(userElement);
+                        break;
+                    }
+                }
+            }
+
+            saveDocument(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<User> getUsersByRole(UserRole role) {

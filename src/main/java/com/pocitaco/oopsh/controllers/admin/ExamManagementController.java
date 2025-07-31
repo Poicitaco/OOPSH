@@ -9,10 +9,16 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Comparator;
 
 public class ExamManagementController extends BaseController {
@@ -49,61 +55,88 @@ public class ExamManagementController extends BaseController {
     }
 
     private void setupTable() {
-        MFXTableRowCell<ExamType, String> codeCell = new MFXTableRowCell<>(ExamType::getCode);
-        MFXTableRowCell<ExamType, String> nameCell = new MFXTableRowCell<>(ExamType::getName);
-        MFXTableRowCell<ExamType, Double> feeCell = new MFXTableRowCell<>(ExamType::getFee);
-        MFXTableRowCell<ExamType, String> statusCell = new MFXTableRowCell<>(ExamType::getStatus);
+        io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> codeColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Code", true);
+        codeColumn.setRowCellFactory(examType -> new MFXTableRowCell<>(ExamType::getCode));
 
-        codeCell.setComparator(Comparator.comparing(ExamType::getCode));
-        nameCell.setComparator(Comparator.comparing(ExamType::getName));
-        feeCell.setComparator(Comparator.comparing(ExamType::getFee));
-        statusCell.setComparator(Comparator.comparing(ExamType::getStatus));
+        io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> nameColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Name", true);
+        nameColumn.setRowCellFactory(examType -> new MFXTableRowCell<>(ExamType::getName));
+
+        io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> feeColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Fee", true);
+        feeColumn.setRowCellFactory(examType -> new MFXTableRowCell<>(ExamType::getFee));
+
+        io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> statusColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Status", true);
+        statusColumn.setRowCellFactory(examType -> new MFXTableRowCell<>(ExamType::getStatus));
 
         tblExams.getTableColumns().addAll(
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Code", true, codeCell),
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Name", true, nameCell),
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Fee", true, feeCell),
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Status", true, statusCell),
+                codeColumn,
+                nameColumn,
+                feeColumn,
+                statusColumn,
                 createActionsColumn()
         );
     }
 
     private io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> createActionsColumn() {
-        io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> actionsColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Actions", false, null);
+        io.github.palexdev.materialfx.controls.MFXTableColumn<ExamType> actionsColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Actions", false);
+        actionsColumn.setRowCellFactory(examType -> {
+            HBox buttons = new HBox(5);
+            buttons.setAlignment(Pos.CENTER);
+            Button btnEdit = new Button("Edit");
+            btnEdit.getStyleClass().add("btn-secondary");
+            btnEdit.setOnAction(event -> handleEditExam(examType));
 
-        actionsColumn.setRowCellFactory(examType -> new MFXTableRowCell<>(et -> "") {
-            {
-                HBox buttons = new HBox(5);
-                buttons.setAlignment(Pos.CENTER);
-                Button btnEdit = new Button("Edit");
-                btnEdit.getStyleClass().add("btn-secondary");
-                btnEdit.setOnAction(event -> handleEditExam(examType));
+            Button btnDelete = new Button("Delete");
+            btnDelete.getStyleClass().add("btn-error");
+            btnDelete.setOnAction(event -> handleDeleteExam(examType));
 
-                Button btnDelete = new Button("Delete");
-                btnDelete.getStyleClass().add("btn-error");
-                btnDelete.setOnAction(event -> handleDeleteExam(examType));
-
-                buttons.getChildren().addAll(btnEdit, btnDelete);
-                setGraphic(buttons);
-            }
+            buttons.getChildren().addAll(btnEdit, btnDelete);
+            return new MFXTableRowCell<>(et -> "") {{ setGraphic(buttons); }};
         });
 
         return actionsColumn;
     }
 
     private void handleAddExam() {
-        // Logic to open the create exam screen
-        showInfo("Add Exam", "Navigating to create exam screen...");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pocitaco/oopsh/admin/exam-create.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Create New Exam Type");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            // Refresh table after closing
+            loadInitialData();
+        } catch (IOException e) {
+            showError("Error", "Could not load the create exam screen.");
+            e.printStackTrace();
+        }
     }
 
     private void handleEditExam(ExamType examType) {
-        // Logic to open the edit exam screen with the selected exam's data
-        showInfo("Edit Exam", "Editing exam: " + examType.getName());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pocitaco/oopsh/admin/exam-edit.fxml"));
+            Parent root = loader.load();
+
+            ExamEditController controller = loader.getController();
+            controller.setExamTypeToEdit(examType);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Edit Exam Type");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            // Refresh table after closing
+            loadInitialData();
+        } catch (IOException e) {
+            showError("Error", "Could not load the edit exam screen.");
+            e.printStackTrace();
+        }
     }
 
     private void handleDeleteExam(ExamType examType) {
         if (showConfirmation("Delete Exam", "Are you sure you want to delete " + examType.getName() + "?")) {
-            examTypeDAO.delete(examType.getId());
+            examTypeDAO.deleteById(examType.getId());
             loadInitialData();
             showInfo("Exam Deleted", examType.getName() + " has been deleted.");
         }
@@ -127,3 +160,4 @@ public class ExamManagementController extends BaseController {
 
     }
 }
+

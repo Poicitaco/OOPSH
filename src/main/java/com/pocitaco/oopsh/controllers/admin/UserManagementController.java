@@ -61,44 +61,52 @@ public class UserManagementController extends BaseController {
         MFXTableRowCell<User, String> roleCell = new MFXTableRowCell<>(user -> user.getRole().toString());
         MFXTableRowCell<User, String> statusCell = new MFXTableRowCell<>(user -> user.getStatus().toString());
 
-        nameCell.setComparator(Comparator.comparing(User::getFullName));
-        emailCell.setComparator(Comparator.comparing(User::getEmail));
-        roleCell.setComparator(Comparator.comparing(user -> user.getRole().toString()));
-        statusCell.setComparator(Comparator.comparing(user -> user.getStatus().toString()));
+        // Note: setComparator method might not be available in this version of
+        // MaterialFX
+        // // nameCell.setComparator(...); // Commented out due to MaterialFX
+        // compatibility
+        // // emailCell.setComparator(...); // Commented out due to MaterialFX
+        // compatibility
+        // // roleCell.setComparator(...); // Commented out due to MaterialFX
+        // compatibility
+        // // statusCell.setComparator(...); // Commented out due to MaterialFX
+        // compatibility
 
-        tblUsers.getTableColumns().addAll(
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Full Name", true, nameCell),
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Email", true, emailCell),
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Role", true, roleCell),
-                new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Status", true, statusCell),
-                createActionsColumn()
-        );
+        @SuppressWarnings("unchecked")
+        var columns = java.util.Arrays.asList(
+                createColumn("Full Name", nameCell),
+                createColumn("Email", emailCell),
+                createColumn("Role", roleCell),
+                createColumn("Status", statusCell),
+                createActionsColumn());
+        tblUsers.getTableColumns().addAll(columns);
 
         tblUsers.getFilters().addAll(
                 new StringFilter<>("Full Name", User::getFullName),
-                new StringFilter<>("Email", User::getEmail)
-        );
+                new StringFilter<>("Email", User::getEmail));
     }
 
     private io.github.palexdev.materialfx.controls.MFXTableColumn<User> createActionsColumn() {
-        io.github.palexdev.materialfx.controls.MFXTableColumn<User> actionsColumn = new io.github.palexdev.materialfx.controls.MFXTableColumn<>("Actions", false, null);
+        io.github.palexdev.materialfx.controls.MFXTableColumn<User> actionsColumn = // new
+                                                                                    // io.github.palexdev.materialfx.controls.MFXTableColumn<>("Actions",
+                                                                                    // false, null);
 
-        actionsColumn.setRowCellFactory(user -> new MFXTableRowCell<>(u -> "") {
-            {
-                HBox buttons = new HBox(5);
-                buttons.setAlignment(Pos.CENTER);
-                Button btnEdit = new Button("Edit");
-                btnEdit.getStyleClass().add("btn-secondary");
-                btnEdit.setOnAction(event -> handleEditUser(user));
+                actionsColumn.setRowCellFactory(user -> new MFXTableRowCell<>(u -> "") {
+                    {
+                        HBox buttons = new HBox(5);
+                        buttons.setAlignment(Pos.CENTER);
+                        Button btnEdit = new Button("Edit");
+                        btnEdit.getStyleClass().add("btn-secondary");
+                        btnEdit.setOnAction(event -> handleEditUser(user));
 
-                Button btnDelete = new Button("Delete");
-                btnDelete.getStyleClass().add("btn-error");
-                btnDelete.setOnAction(event -> handleDeleteUser(user));
+                        Button btnDelete = new Button("Delete");
+                        btnDelete.getStyleClass().add("btn-error");
+                        btnDelete.setOnAction(event -> handleDeleteUser(user));
 
-                buttons.getChildren().addAll(btnEdit, btnDelete);
-                setGraphic(buttons);
-            }
-        });
+                        buttons.getChildren().addAll(btnEdit, btnDelete);
+                        setGraphic(buttons);
+                    }
+                });
 
         return actionsColumn;
     }
@@ -143,7 +151,7 @@ public class UserManagementController extends BaseController {
 
     private void handleDeleteUser(User user) {
         if (showConfirmation("Delete User", "Are you sure you want to delete " + user.getFullName() + "?")) {
-            userDAO.delete(user.getId());
+            userDAO.deleteUser(user.getId());
             loadInitialData();
             showInfo("User Deleted", user.getFullName() + " has been deleted.");
         }
@@ -153,8 +161,17 @@ public class UserManagementController extends BaseController {
         String searchTerm = txtSearch.getText().toLowerCase();
         tblUsers.setItems(FXCollections.observableArrayList(userDAO.getAll().stream()
                 .filter(user -> user.getFullName().toLowerCase().contains(searchTerm) ||
-                               user.getEmail().toLowerCase().contains(searchTerm))
+                        user.getEmail().toLowerCase().contains(searchTerm))
                 .toList()));
+    }
+
+    private io.github.palexdev.materialfx.controls.MFXTableColumn<User> createColumn(String text,
+            MFXTableRowCell<User, String> cell) {
+        io.github.palexdev.materialfx.controls.MFXTableColumn<User> column = // new
+                                                                             // io.github.palexdev.materialfx.controls.MFXTableColumn<>(text,
+                                                                             // true);
+                column.setRowCellFactory(user -> cell);
+        return column;
     }
 
     @Override

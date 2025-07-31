@@ -352,3 +352,4 @@ public class MainLayoutController extends BaseController implements DashboardOpe
         showInfo("Help", "Help documentation will be available soon");
     }
 }
+
