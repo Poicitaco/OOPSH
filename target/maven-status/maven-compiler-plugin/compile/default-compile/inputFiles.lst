@@ -20,7 +20,9 @@ C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\examin
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\models\MockExam.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\admin\ExamCreateController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\enums\PaymentStatus.java
+C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\utils\ValidationHelper.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\candidate\ProfileController.java
+C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\admin\ExamScheduleController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\admin\UserEditController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\candidate\StudyMaterialsController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\MenuCategory.java
@@ -64,7 +66,6 @@ C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\examin
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\examiner\CurrentSessionController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\candidate\AvailableExamsController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\examiner\TodayScheduleController.java
-C:\Users\itent\Desktop\OOPSH\src\main\java\module-info.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\utils\DialogUtils.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\controllers\candidate\RegisterExamController.java
 C:\Users\itent\Desktop\OOPSH\src\main\java\com\pocitaco\oopsh\enums\UserStatus.java

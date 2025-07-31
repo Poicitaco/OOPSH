@@ -389,6 +389,46 @@
     }
 }
 
+/* ===== LOADING STATES ===== */
+.loading-container {
+    -fx-background-color: rgba(255,255,255,0.9);
+    -fx-background-radius: 12;
+    -fx-padding: 40;
+}
+
+.loading-indicator {
+    -fx-progress-color: #1976D2;
+}
+
+.loading-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #757575;
+    -fx-font-weight: 500;
+}
+
+/* ===== ACTIVITY ITEMS ===== */
+.activity-item {
+    -fx-padding: 10;
+    -fx-background-color: #FAFAFA;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.activity-icon {
+    -fx-text-fill: #1976D2;
+}
+
+.activity-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #212121;
+}
+
+.activity-time {
+    -fx-font-size: 12px;
+    -fx-text-fill: #757575;
+}
+
 /* ===== UTILITY CLASSES ===== */
 .text-center {
     -fx-text-alignment: center;

@@ -90,7 +90,7 @@
             <!-- Copyright info -->
             <VBox alignment="CENTER" spacing="3">
                <Label text="© 2025 OOPSH System" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 11; -fx-text-fill: rgba(255,255,255,0.6);" />
-               <Label text="Powered by JavaFX & Material Design" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 10; -fx-text-fill: rgba(255,255,255,0.5);" />
+               <Label text="Powered by JavaFX &amp; Material Design" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 10; -fx-text-fill: rgba(255,255,255,0.5);" />
             </VBox>
          </VBox>
       </VBox>
@@ -129,8 +129,8 @@
                <Label text="Tài khoản demo:" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 12; -fx-text-fill: #757575;" />
                <VBox spacing="2" alignment="CENTER">
                   <Label text="Admin: admin / admin123" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 11; -fx-text-fill: #9E9E9E;" />
-                  <Label text="Examiner: giamthi001 / gt123456" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 11; -fx-text-fill: #9E9E9E;" />
-                  <Label text="Candidate: thisinh001 / ts123456" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 11; -fx-text-fill: #9E9E9E;" />
+                  <Label text="Examiner: examiner / examiner123" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 11; -fx-text-fill: #9E9E9E;" />
+                  <Label text="Candidate: candidate / candidate123" style="-fx-font-family: 'Segoe UI', 'Roboto', sans-serif; -fx-font-size: 11; -fx-text-fill: #9E9E9E;" />
                </VBox>
             </VBox>
          </VBox>
