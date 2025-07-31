@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXCard?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pocitaco.oopsh.controllers.examiner.DashboardOverviewController" styleClass="content-area" spacing="20">
+    <children>
+        <Label styleClass="page-title" text="Examiner Dashboard" />
+        <FlowPane hgap="20" vgap="20">
+            <children>
+                <!-- Exams to Grade Card -->
+                <MFXCard styleClass="stat-card">
+                    <VBox spacing="10">
+                        <FontIcon iconLiteral="mdi2f-file-check" iconSize="32" />
+                        <Label fx:id="lblExamsToGrade" styleClass="stat-number" text="0" />
+                        <Label styleClass="stat-label" text="Exams to Grade" />
+                    </VBox>
+                </MFXCard>
+
+                <!-- Graded Exams Card -->
+                <MFXCard styleClass="stat-card">
+                    <VBox spacing="10">
+                        <FontIcon iconLiteral="mdi2f-file-document-check" iconSize="32" />
+                        <Label fx:id="lblGradedExams" styleClass="stat-number" text="0" />
+                        <Label styleClass="stat-label" text="Graded Exams (Today)" />
+                    </VBox>
+                </MFXCard>
+
+                <!-- Assigned Sessions Card -->
+                <MFXCard styleClass="stat-card">
+                    <VBox spacing="10">
+                        <FontIcon iconLiteral="mdi2c-calendar-star" iconSize="32" />
+                        <Label fx:id="lblAssignedSessions" styleClass="stat-number" text="0" />
+                        <Label styleClass="stat-label" text="Assigned Sessions" />
+                    </VBox>
+                </MFXCard>
+            </children>
+        </FlowPane>
+        <!-- Add more dashboard components like upcoming sessions or grading queue here -->
+    </children>
+</VBox>

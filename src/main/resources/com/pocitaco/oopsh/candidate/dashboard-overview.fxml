@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXCard?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pocitaco.oopsh.controllers.candidate.DashboardOverviewController" styleClass="content-area" spacing="20">
+    <children>
+        <Label styleClass="page-title" text="My Dashboard" />
+        <FlowPane hgap="20" vgap="20">
+            <children>
+                <!-- Upcoming Exams Card -->
+                <MFXCard styleClass="stat-card">
+                    <VBox spacing="10">
+                        <FontIcon iconLiteral="mdi2c-calendar-clock" iconSize="32" />
+                        <Label fx:id="lblUpcomingExams" styleClass="stat-number" text="0" />
+                        <Label styleClass="stat-label" text="Upcoming Exams" />
+                    </VBox>
+                </MFXCard>
+
+                <!-- Completed Exams Card -->
+                <MFXCard styleClass="stat-card">
+                    <VBox spacing="10">
+                        <FontIcon iconLiteral="mdi2c-check-all" iconSize="32" />
+                        <Label fx:id="lblCompletedExams" styleClass="stat-number" text="0" />
+                        <Label styleClass="stat-label" text="Completed Exams" />
+                    </VBox>
+                </MFXCard>
+
+                <!-- Certificates Earned Card -->
+                <MFXCard styleClass="stat-card">
+                    <VBox spacing="10">
+                        <FontIcon iconLiteral="mdi2c-certificate" iconSize="32" />
+                        <Label fx:id="lblCertificatesEarned" styleClass="stat-number" text="0" />
+                        <Label styleClass="stat-label" text="Certificates Earned" />
+                    </VBox>
+                </MFXCard>
+            </children>
+        </FlowPane>
+        <!-- Add more dashboard components like recent results or exam schedule here -->
+    </children>
+</VBox>
